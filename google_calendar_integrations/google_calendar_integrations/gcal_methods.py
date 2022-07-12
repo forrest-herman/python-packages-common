@@ -11,20 +11,19 @@ from google.auth.transport.requests import Request
 # helpful tutorial: https://www.youtube.com/watch?v=j1mh0or2CX8
 # ressources: https://developers.google.com/calendar/api/v3/reference#Freebusy
 
+# default parameters for the calendar API
 # If modifying these scopes, delete the file token.pickle
-CREDENTIALS_FILE_REL = 'credentials/gcal_client_secret.json'
-CREDENTIALS_FILE = os.path.join(os.path.dirname(__file__), CREDENTIALS_FILE_REL)
 SCOPES = ['https://www.googleapis.com/auth/calendar']
-
-# NUM_USERS = 1 This needs work
 
 
 class GoogleCalendarAccount:
     """Defines a Google Calendar Account with service authentication"""
 
-    def __init__(self, api_creds_path='gcal_client_secret.json', token_creds_path="token",):
-        self.api_credentials = api_creds_path
+    def __init__(self, api_creds_path, token_creds_path, scopes=SCOPES):
+        self.api_credentials_path = api_creds_path
         self.token_path = token_creds_path
+        self.scopes = scopes
+
         self.service = self.get_calendar_service()
 
     def get_calendar_service(self):
@@ -33,9 +32,14 @@ class GoogleCalendarAccount:
         creds = None
 
         ########### FIXXXXXXXXXXXXX
-        filename = f'D:/PC Files/Documents/GitHub/Python/discord-bots/calendar-event-sync/credentials/{self.token_path}.pickle'
+        # filename = f'D:/PC Files/Documents/GitHub/Python/discord-bots/calendar-event-sync/credentials/{self.token_path}.pickle'
+
+        # filename = f'{self.token_path}.pickle'
+        # file_path = os.path.join(os.path.dirname(__file__), token_path)
+
         # The file token.pickle stores the user's tokens, and is created automatically
         #  when the authorization flow completes for the first time.
+        filename = self.token_path
         if os.path.exists(filename):
             with open(filename, 'rb') as token:
                 creds = pickle.load(token)
@@ -47,7 +51,8 @@ class GoogleCalendarAccount:
                 except Exception as e:
                     print(e)
             else:
-                flow = InstalledAppFlow.from_client_secrets_file(CREDENTIALS_FILE, scopes=SCOPES)
+                flow = InstalledAppFlow.from_client_secrets_file(
+                    self.api_credentials_path, scopes=self.scopes)
                 creds = flow.run_local_server(port=50547)
 
                 # Save the credentials for the next run
@@ -89,7 +94,3 @@ class GoogleCalendarAccount:
             result = [dict(item, calendar=cal_name) for item in cal_events]
             events.extend(result)
         return events
-
-
-# main functions
-# service = get_calendar_service()
