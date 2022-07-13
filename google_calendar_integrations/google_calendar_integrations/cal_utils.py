@@ -27,3 +27,8 @@ def get_datetime_from_event(event_time):
         return get_date_from_iso(event_time['dateTime'])
     except KeyError:
         return get_date_from_iso(event_time['date']).replace(tzinfo=datetime.timezone.utc)
+
+
+def is_all_day(event):
+    return (event['start'].minute == event['start'].hour == 0) and (
+        event['end'].minute == event['end'].hour == 0)
