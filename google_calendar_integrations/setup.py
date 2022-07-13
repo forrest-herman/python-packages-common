@@ -15,5 +15,6 @@ setup(
     install_requires=[
         "google-auth-oauthlib",
         "google-api-python-client",
+        "python-dateutil"
     ],
 )
