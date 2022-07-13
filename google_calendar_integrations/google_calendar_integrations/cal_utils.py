@@ -23,8 +23,6 @@ def get_date_from_iso(iso_date):
 
 
 def get_datetime_from_event(event_time):
-    print(event_time)
-    # print(event_time['timeZone'])
     try:
         return get_date_from_iso(event_time['dateTime'])
     except KeyError:
