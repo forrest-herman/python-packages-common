@@ -29,6 +29,18 @@ def get_datetime_from_event(event_time):
         return get_date_from_iso(event_time['date']).replace(tzinfo=datetime.timezone.utc)
 
 
+def get_today_timerange():
+    today_start = datetime.datetime.now().replace(
+        hour=0, minute=0, second=0, microsecond=0)
+    today_end = today_start + datetime.timedelta(days=1, seconds=-1)
+
+    # format the times for the API
+    today_start = today_start.astimezone().isoformat()
+    today_end = today_end.astimezone().isoformat()
+
+    return today_start, today_end
+
+
 def is_all_day(event):
     return (event['start'].minute == event['start'].hour == 0) and (
         event['end'].minute == event['end'].hour == 0)
