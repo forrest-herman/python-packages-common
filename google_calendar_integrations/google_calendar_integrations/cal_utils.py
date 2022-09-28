@@ -44,3 +44,10 @@ def get_today_timerange():
 def is_all_day(event):
     return (event['start'].minute == event['start'].hour == 0) and (
         event['end'].minute == event['end'].hour == 0)
+
+
+def get_summary_if_possible(event):
+    try:
+        return event['summary']
+    except KeyError:
+        return "No Summary"

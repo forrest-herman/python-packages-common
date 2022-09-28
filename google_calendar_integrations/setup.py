@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='google_calendar_integrations',
-    version='0.1.1',
+    version='0.1.2',
     description='Google Calendar Integrations Package',
     author='Forrest Herman',
     author_email='forrestherman13@gmail.com',
